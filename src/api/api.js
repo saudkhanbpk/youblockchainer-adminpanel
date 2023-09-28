@@ -47,7 +47,6 @@ export const updateOnBoardMetamaskVideo = (id, data) =>
 
 export const getHomeCardList = () => axios.get(`${baseUrl}/api/v1/admin/home`);
 export const updateHomeCardList = (data) => {
-  console.log(localStorage.getItem('ybToken'));
   axios.put(`${baseUrl}/api/v1/admin/home`, data, {
     headers: {
       Authorization: localStorage.getItem('ybToken'),
@@ -63,20 +62,45 @@ export const deleteHomeCardItems = (id) =>
   axios.delete(`${baseUrl}/homecardlist/${id}`);
 
 // Blogs
-export const getBlogCategory = () => axios.get(`${baseUrl}/blogcategory`);
+export const getBlogCategory = () => axios.get(`${baseUrl}/api/v1/category/`);
 export const insertBlogCategory = (data) =>
-  axios.post(`${baseUrl}/blogcategory/insert`, data);
+  axios.post(`${baseUrl}/api/v1/category/`, data, {
+    headers: {
+      Authorization: localStorage.getItem('ybToken'),
+    },
+  });
 export const updateBlogCategory = (id, data) =>
-  axios.put(`${baseUrl}/blogcategory/${id}`, data);
+  axios.put(`${baseUrl}/api/v1/category/${id}`, data, {
+    headers: {
+      Authorization: localStorage.getItem('ybToken'),
+    },
+  });
 export const deleteBlogCategory = (id) =>
-  axios.delete(`${baseUrl}/blogcategory/${id}`);
+  axios.delete(`${baseUrl}/api/v1/category/${id}`, {
+    headers: {
+      Authorization: localStorage.getItem('ybToken'),
+    },
+  });
 
-export const getBlogs = () => axios.get(`${baseUrl}/blogs`);
+export const getBlogs = () => axios.get(`${baseUrl}/api/v1/blog/`);
 export const insertBlogs = (data) =>
-  axios.post(`${baseUrl}/blogs/insert`, data);
+  axios.post(`${baseUrl}/api/v1/blog/`, data, {
+    headers: {
+      Authorization: localStorage.getItem('ybToken'),
+    },
+  });
 export const updateBlogs = (id, data) =>
-  axios.put(`${baseUrl}/blogs/${id}`, data);
-export const deleteBlogs = (id) => axios.delete(`${baseUrl}/blogs/${id}`);
+  axios.put(`${baseUrl}/api/v1/blog/${id}`, data, {
+    headers: {
+      Authorization: localStorage.getItem('ybToken'),
+    },
+  });
+export const deleteBlogs = (id) =>
+  axios.delete(`${baseUrl}/api/v1/blog/${id}`, {
+    headers: {
+      Authorization: localStorage.getItem('ybToken'),
+    },
+  });
 
 export const getKnowledge = () => axios.get(`${baseUrl}/api/v1/knowledge`);
 export const insertKnowledge = (data) =>

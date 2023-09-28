@@ -28,7 +28,7 @@ function AddReelCategory() {
       return;
     }
     const dataObj = {
-      category_name: namecat,
+      name: namecat,
     };
     const res = await insertBlogCategory(dataObj);
     if (res.status === 200) {
@@ -40,7 +40,7 @@ function AddReelCategory() {
 
   const updateUsefulLinkfunc = async (id) => {
     const dataObj = {
-      category_name: namecat,
+      name: namecat,
     };
     const res = await updateBlogCategory(id, dataObj);
     if (res.status === 200) {
@@ -52,7 +52,7 @@ function AddReelCategory() {
 
   const populateCategoryData = () => {
     if (location.state) {
-      setName(location.state.dataObj.category_name);
+      setName(location.state.dataObj.name);
     }
   };
 
@@ -95,7 +95,7 @@ function AddReelCategory() {
                           <Button
                             onClick={() =>
                               updateUsefulLinkfunc(
-                                location.state.dataObj.category_id
+                                location.state.dataObj._id
                               )
                             }
                             className="me-3"

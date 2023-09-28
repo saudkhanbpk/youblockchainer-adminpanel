@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from 'react';
 import {
   Container,
   Row,
@@ -10,26 +10,31 @@ import {
   Label,
   Input,
   Button,
-} from "reactstrap";
-import { Breadcrumbs } from "../../../AbstractElements";
-import { useNavigate, useLocation } from "react-router-dom";
-import Dropzone from "react-dropzone-uploader";
-import "react-dropzone-uploader/dist/styles.css";
-import CKEditors from "react-ckeditor-component";
-import { TagsInput } from "react-tag-input-component";
-import { getBlogCategory, insertBlogs, updateBlogs } from "../../../api/api";
-import { toast } from "react-toastify";
+} from 'reactstrap';
+import { Breadcrumbs } from '../../../AbstractElements';
+import { useNavigate, useLocation } from 'react-router-dom';
+import Dropzone from 'react-dropzone-uploader';
+import 'react-dropzone-uploader/dist/styles.css';
+import CKEditors from 'react-ckeditor-component';
+import { TagsInput } from 'react-tag-input-component';
+import {
+  getBlogCategory,
+  insertBlogs,
+  updateBlogs,
+  uploadToIpfs,
+} from '../../../api/api';
+import { toast } from 'react-toastify';
 
 function AddReelBlogs() {
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [titleState, settitleState] = useState("");
-  const [metaKeywordState, setmetaKeywordState] = useState([]);
-  const [metaDescriptionState, setmetaDescriptionState] = useState("");
-  const [imgFile, setImageFile] = useState("");
-  const [categories, setCategories] = useState("");
+  const [titleState, settitleState] = useState('');
+  const [metaKeywordState, setmetaKeywordState] = useState('');
+  const [metaDescriptionState, setmetaDescriptionState] = useState('');
+  const [imgFile, setImageFile] = useState('');
+  const [categories, setCategories] = useState('');
   const [getCategories, setGetCategories] = useState([]);
 
   const onChange = (evt) => {
@@ -38,40 +43,56 @@ function AddReelBlogs() {
   };
 
   const handleAddBlogs = async () => {
-    if (titleState === "" || metaKeywordState === "" || metaDescriptionState === "" || imgFile === "") {
-      toast.error("Please fill in all the required fields!");
+    console.log(titleState, metaDescriptionState, metaKeywordState, imgFile);
+    if (
+      titleState === '' ||
+      metaKeywordState === '' ||
+      metaDescriptionState === '' ||
+      imgFile === ''
+    ) {
+      toast.error('Please fill in all the required fields!');
       return;
     }
     const formData = new FormData();
-    formData.append("blogs_title", titleState);
-    formData.append("blog_category_id", categories);
-    formData.append("blogs_metakeywords", JSON.stringify(metaKeywordState));
-    formData.append("blogs_metadescription", metaDescriptionState);
-    formData.append("blogs_image", imgFile);
-    formData.append("blogs_content", content);
+    formData.append('files', imgFile);
 
-    const res = await insertBlogs(formData);
+    const resp = await uploadToIpfs(formData);
+    const data = {
+      title: titleState,
+      category: categories,
+      content,
+      metaKeywords: metaKeywordState,
+      metaDescription: metaDescriptionState,
+      image: resp.data.urls[0],
+    };
+
+    const res = await insertBlogs(data);
     if (res.status === 200) {
       navigate(`${process.env.PUBLIC_URL}/blogs/blogs_list`);
     } else {
-      alert("Error");
+      alert('Error');
     }
   };
 
   const updateAddBlogs = async (id) => {
     const formData = new FormData();
-    formData.append("blogs_title", titleState);
-    formData.append("blog_category_id", categories);
-    formData.append("blogs_metakeywords", JSON.stringify(metaKeywordState));
-    formData.append("blogs_metadescription", metaDescriptionState);
-    formData.append("blogs_image", imgFile);
-    formData.append("blogs_content", content);
+    formData.append('files', imgFile);
 
-    const res = await updateBlogs(id, formData);
+    const resp = await uploadToIpfs(formData);
+    const data = {
+      title: titleState,
+      category: categories,
+      content,
+      metaKeywords: metaKeywordState,
+      metaDescription: metaDescriptionState,
+      image: resp.data.urls[0],
+    };
+
+    const res = await updateBlogs(id, data);
     if (res.status === 200) {
       navigate(`${process.env.PUBLIC_URL}/blogs/blogs_list`);
     } else {
-      alert("Error occured.");
+      alert('Error occured.');
     }
   };
 
@@ -80,13 +101,11 @@ function AddReelBlogs() {
   };
   const populateCategoryData = () => {
     if (location.state) {
-      settitleState(location.state.dataObj.blogs_title);
-      setCategories(location.state.dataObj.blog_category_id);
-      setmetaKeywordState(
-        JSON.parse(location.state.dataObj.blogs_metakeywords)
-      );
-      setmetaDescriptionState(location.state.dataObj.blogs_metadescription);
-      setContent(location.state.dataObj.blogs_content);
+      settitleState(location.state.dataObj.title);
+      setCategories(location.state.dataObj.category);
+      setmetaKeywordState(location.state.dataObj.metaKeywords);
+      setmetaDescriptionState(location.state.dataObj.metaDescription);
+      setContent(location.state.dataObj.content);
     }
   };
 
@@ -101,23 +120,23 @@ function AddReelBlogs() {
   }, []);
   return (
     <Fragment>
-      <Breadcrumbs parent="Blogs" title="Add Blog" mainTitle=" Add Blog" />
+      <Breadcrumbs parent='Blogs' title='Add Blog' mainTitle=' Add Blog' />
       <Container fluid={true}>
         <Row>
-          <Col sm="12">
+          <Col sm='12'>
             <Card>
               <CardBody>
                 <Form>
                   <Row>
                     <Col>
                       <FormGroup>
-                        <Label>{"Title"}</Label>
+                        <Label>{'Title'}</Label>
                         <Input
                           onChange={(e) => settitleState(e.target.value)}
-                          className="form-control digits"
-                          placeholder="Enter Title"
+                          className='form-control digits'
+                          placeholder='Enter Title'
                           value={titleState}
-                          type="text"
+                          type='text'
                           required
                         />
                       </FormGroup>
@@ -126,19 +145,19 @@ function AddReelBlogs() {
                   <Row>
                     <Col>
                       <FormGroup>
-                        <Label>{"Category"}</Label>
+                        <Label>{'Category'}</Label>
                         <Input
-                          type="select"
+                          type='select'
                           value={categories}
                           onChange={(e) => setCategories(e.target.value)}
-                          placeholder="Select a Category "
-                          className="form-control"
+                          placeholder='Select a Category '
+                          className='form-control'
                           required
                         >
-                          <option value={""}>Select Category</option>
+                          <option value={''}>Select Category</option>
                           {getCategories?.map((val, i) => (
-                            <option value={val.category_id} key={i}>
-                              {val.category_name}
+                            <option value={val._id} key={i}>
+                              {val.name}
                             </option>
                           ))}
                         </Input>
@@ -148,11 +167,11 @@ function AddReelBlogs() {
                   <Row>
                     <Col>
                       <FormGroup>
-                        <Label>{"Meta Keywords"}</Label>
-                        <TagsInput
+                        <Label>{'Meta Keywords'}</Label>
+                        <Input
                           value={metaKeywordState}
-                          onChange={setmetaKeywordState}
-                          placeHolder="Enter Keywords"
+                          onChange={(e) => setmetaKeywordState(e.target.value)}
+                          placeHolder='Enter Keywords'
                         />
                       </FormGroup>
                     </Col>
@@ -160,15 +179,15 @@ function AddReelBlogs() {
                   <Row>
                     <Col>
                       <FormGroup>
-                        <Label>{"Meta Description"}</Label>
+                        <Label>{'Meta Description'}</Label>
                         <Input
                           onChange={(e) =>
                             setmetaDescriptionState(e.target.value)
                           }
                           value={metaDescriptionState}
-                          placeholder="Enter Meta Description"
-                          className="form-control"
-                          type="text"
+                          placeholder='Enter Meta Description'
+                          className='form-control'
+                          type='text'
                         />
                       </FormGroup>
                     </Col>
@@ -176,16 +195,16 @@ function AddReelBlogs() {
                   <Row>
                     <Col>
                       <FormGroup>
-                        <Label>{"Image"}</Label>
+                        <Label>{'Image'}</Label>
                         <Dropzone
                           onChangeStatus={handleChangeStatus}
-                          inputContent="Drop An Image"
+                          inputContent='Drop An Image'
                           multiple={false}
                           canCancel={false}
                           maxFiles={1}
                           styles={{
-                            dropzone: { width: "100%", minHeight: 50 },
-                            dropzoneActive: { borderColor: "green" },
+                            dropzone: { width: '100%', minHeight: 50 },
+                            dropzoneActive: { borderColor: 'green' },
                           }}
                         />
                       </FormGroup>
@@ -194,9 +213,9 @@ function AddReelBlogs() {
                   <Row>
                     <Col>
                       <FormGroup>
-                        <Label>{"Description"}</Label>
+                        <Label>{'Description'}</Label>
                         <CKEditors
-                          activeclassName="p10"
+                          activeclassName='p10'
                           content={content}
                           events={{
                             change: onChange,
@@ -207,24 +226,24 @@ function AddReelBlogs() {
                   </Row>
                   <Row>
                     <Col>
-                      <FormGroup className="mb-0">
+                      <FormGroup className='mb-0'>
                         {location?.state ? (
                           <Button
                             onClick={() =>
-                              updateAddBlogs(location.state.dataObj.blogs_id)
+                              updateAddBlogs(location.state.dataObj._id)
                             }
-                            className="me-3"
-                            color="success"
+                            className='me-3'
+                            color='success'
                           >
-                            {"Update"}
+                            {'Update'}
                           </Button>
                         ) : (
                           <Button
                             onClick={handleAddBlogs}
-                            className="me-3"
-                            color="success"
+                            className='me-3'
+                            color='success'
                           >
-                            {"Submit"}
+                            {'Submit'}
                           </Button>
                         )}
                       </FormGroup>

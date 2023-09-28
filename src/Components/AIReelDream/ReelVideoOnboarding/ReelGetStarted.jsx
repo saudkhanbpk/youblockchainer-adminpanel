@@ -38,7 +38,7 @@ const ReelGetStarted = () => {
       return;
     }
     const formData = new FormData();
-    formData.append("files", [imgFile]);
+    formData.append("files", imgFile);
 
     const res = await uploadToIpfs(formData);
     await updateConfig({ video1: res.data.urls[0] });

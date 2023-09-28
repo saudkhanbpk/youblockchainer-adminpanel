@@ -20,7 +20,7 @@ function Blog_List () {
   const deleteCategoryItem = async( id ) => {
     const res = await deleteBlogCategory( id );
     if ( res.status === 200 ) {
-      const freshArray = categoriesList.filter( ( val ) => val.categorysection_id  !== id );
+      const freshArray = categoriesList.filter( ( val ) => val._id  !== id );
       setcategoriesList( freshArray );
     }
   }
@@ -29,21 +29,21 @@ function Blog_List () {
     getCategoryList();
   },[])
   
-  const Blog_Category_Data = categoriesList.map((elem) => {
+  const Blog_Category_Data = categoriesList.map((elem, index) => {
   return {
     Name: (
       <div>
-        <span>{elem.categorysection_name}</span>
+        <span>{elem.name}</span>
       </div>
     ),
-    SerialNumber: `${elem.Categorysection_serialnumber}`,
+    SerialNumber: `${index}`,
 
-    Status: `${elem.categorysection_status}`,
+    Status: `Active`,
     action: (
       <div>
         <span>
           <Button
-            onClick={() => deleteCategoryItem(elem.categorysection_id )}
+            onClick={() => deleteCategoryItem(elem._id )}
             className="btn btn-danger btn-xs"
             style={ style2 }
           >

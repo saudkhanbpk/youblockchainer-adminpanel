@@ -31,7 +31,7 @@ function ReelCategoryList() {
   const deleteCategoryItem = async (id) => {
     const res = await deleteBlogCategory(id);
     if (res.status === 200) {
-      const freshArray = categoriesList.filter((val) => val.category_id !== id);
+      const freshArray = categoriesList.filter((val) => val._id !== id);
       setcategoriesList(freshArray);
     }
   };
@@ -42,12 +42,12 @@ function ReelCategoryList() {
 
   const Blog_Category_Data = categoriesList.map((elem) => {
     return {
-      Name: elem.category_name,
+      Name: elem.name,
       action: (
         <div>
           <span>
             <Button
-              onClick={() => deleteCategoryItem(elem.category_id)}
+              onClick={() => deleteCategoryItem(elem._id)}
               className="btn btn-danger btn-xs"
               style={style2}
             >

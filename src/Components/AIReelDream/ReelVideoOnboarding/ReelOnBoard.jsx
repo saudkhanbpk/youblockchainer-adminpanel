@@ -37,7 +37,7 @@ const ReelOnBoard = () => {
       return;
     }
     const formData = new FormData();
-    formData.append("files", [imgFile]);
+    formData.append("files", imgFile);
 
     const res = await uploadToIpfs(formData);
     await updateConfig({ video3: res.data.urls[0] });

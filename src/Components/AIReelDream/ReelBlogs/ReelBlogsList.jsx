@@ -28,7 +28,7 @@ function Blogs_List() {
   const deleteBlogElem = async (id) => {
     const res = await deleteBlogs(id);
     if (res.status === 200) {
-      const freshArray = blogListState.filter((val) => val.blogs_id !== id);
+      const freshArray = blogListState.filter((val) => val._id !== id);
       setblogListState(freshArray);
     }
   };
@@ -42,18 +42,18 @@ function Blogs_List() {
       image: (
         <Image
           attrImage={{
-            src: serverImageUrl + elem.blogs_image,
+            src: elem.image,
             style: style,
             alt: "Unavailable",
           }}
         />
       ),
-      Title: `${elem.blogs_title}`,
+      Title: `${elem.title}`,
       action: (
         <div>
           <span>
             <Button
-              onClick={() => deleteBlogElem(elem.blogs_id)}
+              onClick={() => deleteBlogElem(elem._id)}
               className="btn btn-danger btn-xs"
               style={style2}
             >
