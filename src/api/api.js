@@ -4,7 +4,7 @@ import axios from 'axios';
 // export const serverImageUrl = "https://reelbackendapi.myreeldream.com/nodeassets/";
 // export const authUrl = "https://reelbackendapi.myreeldream.com";
 export const baseUrl = 'https://app.myreeldream.ai';
-// export const baseUrl = 'http://localhost:57956';
+// export const baseUrl = 'http://localhost:62134';
 export const serverImageUrl =
   'https://youblockchainbackendnew.unialsolutions.com/nodeassets/';
 export const authUrl = 'https://youblockchainbackendnew.unialsolutions.com';
@@ -167,11 +167,15 @@ export const updateSupportStatus = (id, data) =>
   axios.put(`${baseUrl}/supporttickets/${id}`, data);
 
 // Packages:
-export const getPackages = () => axios.get(`${baseUrl}/packages`);
+export const getPackages = () => axios.get(`${baseUrl}/api/v1/admin/packages`);
 export const insertPackages = (data) =>
   axios.post(`${baseUrl}/packages/insert`, data);
-export const updatePackages = (id, data) =>
-  axios.put(`${baseUrl}/packages/${id}`, data);
+export const updatePackages = (data) =>
+  axios.put(`${baseUrl}/api/v1/admin/packages`, data, {
+    headers: {
+      Authorization: localStorage.getItem('ybToken'),
+    },
+  });
 export const deletePackages = (id) => axios.delete(`${baseUrl}/packages/${id}`);
 
 export const getOrganizations = () => axios.get(`${baseUrl}/api/v1/brand/`);

@@ -172,14 +172,14 @@ export const MENUITEMS = [
         children: [
           {
             path: `${process.env.PUBLIC_URL}/subscription/add_packages`,
-            title: "Add Packages",
+            title: "Packages",
             type: "link",
           },
-          {
-            path: `${process.env.PUBLIC_URL}/subscription/packages_list`,
-            title: "Packages List",
-            type: "link",
-          },
+          // {
+          //   path: `${process.env.PUBLIC_URL}/subscription/packages_list`,
+          //   title: "Packages List",
+          //   type: "link",
+          // },
         ],
       },
       {
