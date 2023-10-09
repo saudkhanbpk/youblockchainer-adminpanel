@@ -81,16 +81,16 @@ function AddReelKnowledge() {
     let packages = res.data;
     setName1(packages[0][0]);
     setPrice1(packages[0][1].hex);
-    setScripts1(packages[0][2].hex);
+    setScripts1(parseInt(packages[0][2].hex));
     setName2(packages[1][0]);
     setPrice2(packages[1][1].hex);
-    setScripts2(packages[1][2].hex);
+    setScripts2(parseInt(packages[1][2].hex));
     setName3(packages[2][0]);
     setPrice3(packages[2][1].hex);
-    setScripts3(packages[2][2].hex);
+    setScripts3(parseInt(packages[2][2].hex));
     setName4(packages[3][0]);
     setPrice4(packages[3][1].hex);
-    setScripts4(packages[3][2].hex);
+    setScripts4(parseInt(packages[3][2].hex));
   };
 
   useEffect(() => {
@@ -151,10 +151,10 @@ function AddReelKnowledge() {
                         <Input
                           onChange={(e) => {
                             if (e.target.value.trim() !== '') {
-                              setScripts1(web3.utils.toWei(e.target.value));
+                              setScripts1(e.target.value);
                             }
                           }}
-                          value={web3.utils.fromWei(scripts1)}
+                          value={scripts1}
                           type='number'
                           placeholder='Enter option'
                           className='form-control'
@@ -208,10 +208,10 @@ function AddReelKnowledge() {
                         <Input
                           onChange={(e) => {
                             if (e.target.value.trim() !== '') {
-                              setScripts2(web3.utils.toWei(e.target.value));
+                              setScripts2(e.target.value);
                             }
                           }}
-                          value={web3.utils.fromWei(scripts2)}
+                          value={scripts2}
                           type='number'
                           placeholder='Enter option'
                           className='form-control'
@@ -265,10 +265,10 @@ function AddReelKnowledge() {
                         <Input
                           onChange={(e) => {
                             if (e.target.value.trim() !== '') {
-                              setScripts3(web3.utils.toWei(e.target.value));
+                              setScripts3(e.target.value);
                             }
                           }}
-                          value={web3.utils.fromWei(scripts3)}
+                          value={scripts3}
                           type='number'
                           placeholder='Enter option'
                           className='form-control'
@@ -322,10 +322,10 @@ function AddReelKnowledge() {
                         <Input
                           onChange={(e) => {
                             if (e.target.value.trim() !== '') {
-                              setScripts4(web3.utils.toWei(e.target.value));
+                              setScripts4(e.target.value);
                             }
                           }}
-                          value={web3.utils.fromWei(scripts4)}
+                          value={scripts4}
                           type='number'
                           placeholder='Enter option'
                           className='form-control'
