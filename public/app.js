@@ -5,6 +5,6 @@ var middlewares = jsonServer.defaults();
 
 server.use(middlewares);
 server.use(router);
-server.listen('8000', function () {
-  console.log('JSON server is running');
+const serverA = server.listen(0, () => {
+  console.log('App listening at ', serverA.address().port);
 });
